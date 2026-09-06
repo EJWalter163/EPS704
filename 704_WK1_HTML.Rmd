@@ -1,0 +1,28 @@
+---
+title: "704Wk1EJW"
+author: "Ric Walter"
+date: "2026-09-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is the output for EPS704 Wk1, to include a CSV and Excel file.  The CSV file, Enroll had 800 observation, 25 columns (8 -char, 16-num and 1 date), while Excel file,Demo had 499 observations with 6 variables.
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
