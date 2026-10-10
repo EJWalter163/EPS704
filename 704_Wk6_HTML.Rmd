@@ -1,0 +1,66 @@
+---
+title: "704wk6"
+author: "Ric Walter"
+date: "2026-10-09"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+<!-- BEFORE YOU KNIT: put this file and the data in the same folder, then in RStudio
+     click Session > Set Working Directory > To Source File Location, then click Knit. -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)   # echo = TRUE prints your code in the report.
+```
+
+## Goal
+
+A small end to end report: import, one summary, one plot, and a short conclusion.
+
+## Import and summary
+
+```{r import}
+library(readr); library(ggplot2)
+
+
+
+#install.packages("dplyr")
+library(dplyr)                          # dplyr holds the cleaning verbs.
+
+library(stringr)                        # stringr holds str_trim.
+
+#install.packages("tidyr")
+library(tidyr)                     # dplyr holds the cleaning verbs.
+
+
+enroll <- read_csv("/Users/ricwalter/Desktop/Miami/EPS704/Tables/enrollment.csv")
+
+
+
+mean(enroll$gpa, na.rm = TRUE)          # average gpa.
+```
+
+The data has `r nrow(enroll)` students. The average gpa is `r round(mean(enroll$gpa, na.rm = TRUE), 2)`.
+
+## One plot
+
+```{r plot, fig.cap="Distribution of GPA", fig.width=6, fig.height=4}
+enroll2 <- enroll |>                                    # start a cleaning pipeline.
+  mutate(program = str_trim(program)) |>             # remove extra spaces in program.
+  mutate(gender = str_to_lower(gender)) |>           # lowercase gender for matching.
+  mutate(gender = case_when(                         # recode spellings into two labels.
+    gender %in% c("f", "female") ~ "Female",
+    gender %in% c("m", "male")   ~ "Male",
+    TRUE ~ gender)) |>
+  mutate(gpa = na_if(gpa, 999)) |>                   # mark the missing code 999 as NA.
+  distinct(student_id, .keep_all = TRUE)  
+
+
+# Histogram
+ggplot(enroll2, aes(x = gpa)) +         
+  geom_histogram(binwidth = 0.1) +      
+  labs(title = "Distribution of GPA", x = "GPA", y = "Number of students")
+```
+
+## Conclusion
